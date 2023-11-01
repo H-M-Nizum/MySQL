@@ -1,0 +1,25 @@
+# Write your MySQL query statement below
+SELECT Customers.name AS customers
+FROM Customers
+LEFT JOIN Orders
+ON Orders.customerId = Customers.id
+GROUP BY Customers.id
+HAVING COUNT(Orders.id) = 0;
+
+
+
+
+# Write your MySQL query statement below
+select name as Customers 
+from Customers 
+where id not in(select customerId from orders);
+
+
+
+
+# Write your MySQL query statement below
+SELECT Customers.name AS customers
+FROM Customers
+LEFT JOIN Orders
+ON Orders.customerId = Customers.id
+WHERE Orders.customerid IS NULL;
