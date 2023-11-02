@@ -1,0 +1,8 @@
+# Write your MySQL query statement below
+# When need a group that contain a pair or multivalue 
+# Then separeted the column name by coma(,) in GROUP BY function
+
+SELECT actor_id, director_id
+FROM ActorDirector
+GROUP BY actor_id, director_id
+HAVING COUNT(timestamp) >= 3;
