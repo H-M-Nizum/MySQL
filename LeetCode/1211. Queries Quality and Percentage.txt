@@ -1,0 +1,54 @@
+# Write your MySQL query statement below
+
+# Make a tem table
+# FInd this row that rating less than 3
+
+    WITH cte1 AS
+    (
+        SELECT query_name, COUNT(rating) AS c1 
+        FROM Queries
+        WHERE rating < 3
+        GROUP BY query_name 
+
+    ),
+# Make another tem table
+# Count the element in every group and calculate quality
+    cte AS
+    (
+        SELECT query_name, COUNT(rating) AS c, ROUND(AVG(q.rating/q.position), 2) AS quality
+        FROM Queries AS q
+        GROUP BY query_name
+    )
+
+# Perform left join function
+# Check 
+    # if number of rating that less then 3 is zreo or nul ans is 0
+    # else claculate The percentage of all queries with rating less than 3.
+
+SELECT cte.query_name, cte.quality, 
+    CASE WHEN cte1.c1 IS NULL THEN 0 
+    ELSE ROUND((cte1.c1/cte.c)*100, 2) 
+    END AS poor_query_percentage
+FROM cte 
+LEFT JOIN cte1
+ON cte.query_name = cte1.query_name
+
+
+
+
+
+
+WITH cte2 AS
+(
+    SELECT q.query_name, (q.rating / q.position) AS ratio, 
+        CASE WHEN q.rating < 3 Then 1
+        ELSE 0
+        END AS poor 
+    FROM Queries AS q
+)
+
+SELECT query_name, 
+    ROUND(AVG(ratio), 2) AS quality, 
+    ROUND((SUM(poor) / COUNT(*)) * 100, 2) AS poor_query_percentage 
+FROM cte2
+GROUP BY query_name
