@@ -38,6 +38,7 @@ ON cte.query_name = cte1.query_name
 
 
 
+
 WITH cte2 AS
 (
     SELECT q.query_name, (q.rating / q.position) AS ratio, 

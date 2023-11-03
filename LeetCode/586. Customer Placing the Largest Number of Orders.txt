@@ -23,6 +23,8 @@ Follow up:
 
 # Then finally return Those customer number, their Total order number Equal to the Maximum order number. 
 
+
+
 # Write your MySQL query statement below
 WITH cte AS
 (

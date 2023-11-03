@@ -1,8 +1,11 @@
-# Write your MySQL query statement below
+
 # use CASE  END Function 
 # This function contain (WHEN condition THEEN result)
 # And finally ELSE like if-else 
 # AND last show a new column END AS new_column
+
+
+# Write your MySQL query statement below
 SELECT x, y, z, CASE
   WHEN x+y>z AND x+z>y AND y+z>x 
   THEN 'Yes'

@@ -13,6 +13,8 @@ SET sex = CASE
 
 
 
+
+
 # Another approce 
 # first i can make  two table (f nad m table)
 # Then change their sex value
