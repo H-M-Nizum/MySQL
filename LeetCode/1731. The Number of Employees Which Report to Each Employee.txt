@@ -1,0 +1,11 @@
+# use Subquery for select name.
+
+# Write your MySQL query statement below
+SELECT l.reports_to AS employee_id, 
+    (SELECT f.name FROM Employees AS f WHERE l.reports_to = f.employee_id) AS name,
+    COUNT(*) AS reports_count, 
+    ROUND(AVG(l.age)) AS average_age
+FROM Employees AS l
+GROUP BY l.reports_to
+HAVING reports_to IS NOT NULL
+ORDER BY l.reports_to;
