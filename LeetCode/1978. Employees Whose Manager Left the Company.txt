@@ -1,0 +1,14 @@
+# Write your MySQL query statement below
+WITH cte AS(
+    SELECT *
+    FROM Employees
+    WHERE salary < 30000 AND (manager_id IS NOT NULL)
+)
+
+SELECT c.employee_id
+FROM cte AS c
+LEFT JOIN Employees AS e
+ON c.manager_id = e.employee_id
+WHERE e.employee_id IS NULL
+
+ORDER BY c.employee_id;
