@@ -1,0 +1,13 @@
+# Write your MySQL query statement below
+WITH cte AS
+(
+    SELECT employee_id, COUNT(*) AS cont
+    FROM Employee
+    GROUP BY employee_id
+)
+
+SELECT c.employee_id, e.department_id
+FROM cte AS c
+INNER JOIN Employee AS e
+ON c.employee_id = e.employee_id
+WHERE (e.primary_flag = 'Y' AND c.cont > 1) OR c.cont = 1;
