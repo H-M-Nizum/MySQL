@@ -9,3 +9,24 @@ FROM Employees AS l
 GROUP BY l.reports_to
 HAVING reports_to IS NOT NULL
 ORDER BY l.reports_to;
+
+
+
+
+
+
+# Another way
+
+WITH cte AS
+(
+  SELECT reports_to, COUNT(employee_id) AS reports_count, ROUND(AVG(age)) AS average_age
+  FROM Employees
+  WHERE reports_to IS NOT NULL
+  GROUP BY reports_to
+)
+
+SELECT e.employee_id, e.name, c.reports_count, c.average_age
+FROM cte AS c
+LEFT JOIN Employees AS e
+ON c.reports_to = e.employee_id
+ORDER BY c.reports_to;
