@@ -1,0 +1,28 @@
+# Write your MySQL query statement below
+# AT first connect students and subjects table with cross join (one to many connection)
+# then cte2 count the number of (student_id, subject_name)
+# finally join 2 table if count null, set 0. else set count
+# AND group and order (student_id, subject_name)
+
+WITH cte AS
+(
+  SELECT s.student_id, s.student_name, t.subject_name
+  FROM Students AS s
+  CROSS JOIN Subjects AS t
+),
+cte2 AS
+(
+  SELECT e.student_id, e.subject_name, COUNT(e.subject_name) AS attended_exams
+  FROM Examinations AS e
+  GROUP BY e.student_id, e.subject_name
+  ORDER BY e.student_id, e.subject_name
+)
+
+SELECT c.student_id, c.student_name, c.subject_name, CASE WHEN e.attended_exams IS NULL THEN 0
+ELSE e.attended_exams END AS attended_exams
+FROM cte AS c
+LEFT JOIN cte2 AS e
+ON e.student_id = c.student_id AND c.subject_name = e.subject_name
+GROUP BY c.student_id, c.subject_name
+ORDER BY c.student_id, c.subject_name;
+
