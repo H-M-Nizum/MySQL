@@ -1,0 +1,26 @@
+# # Write your MySQL query statement below
+# At first separate start and end activity type
+# Then join those separate table, base on machine_id and process_id
+# Calculate average timestamp for every machine (group base on machine id)
+
+WITH start AS
+(
+  SELECT machine_id, process_id, activity_type, timestamp
+  FROM Activity
+  WHERE activity_type = 'start'
+  GROUP BY machine_id, process_id
+),
+endl AS
+(
+  SELECT machine_id, process_id, activity_type, timestamp
+  FROM Activity
+  WHERE activity_type = 'end'
+  GROUP BY machine_id, process_id
+)
+
+
+SELECT endl.machine_id, ROUND(AVG(endl.timestamp - start.timestamp), 3) AS processing_time
+FROM endl
+LEFT JOIN start
+ON endl.machine_id = start.machine_id AND endl.process_id = start.process_id
+GROUP BY endl.machine_id
