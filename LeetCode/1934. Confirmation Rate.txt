@@ -1,0 +1,45 @@
+# Write your MySQL query statement below
+WITH cte AS
+(
+    SELECT user_id, COUNT(action) AS c
+    FROM Confirmations
+    GROUP BY user_id
+), 
+cte2 AS
+(
+    SELECT user_id, COUNT(*) AS c2
+    FROM Confirmations
+    WHERE action = 'confirmed'
+    GROUP BY user_id
+),
+cte3 AS
+(
+    SELECT cte.user_id, ROUND(cte2.c2/cte.c, 2) AS confirmation_rate
+    FROM cte
+    LEFT JOIN cte2
+    ON cte.user_id = cte2.user_id
+)
+
+SELECT s.user_id, 
+    CASE WHEN c.confirmation_rate IS NULL THEN 0.00 
+    ELSE c.confirmation_rate 
+    END AS confirmation_rate
+FROM Signups AS s
+LEFT JOIN cte3 AS c
+ON s.user_id = c.user_id
+
+
+######################################
+# SUM(c.action='confirmed') , c.action='confirmed' if true return 1 else return 0.
+# so if i sum this condition , then i can count the condirmed action
+# Those user are not avaible confirmations table, there for confirmation_rate 0.00 (WHEN c.time_stamp IS NULL THEN 0.00 )
+# and finally calculate persentage and rounf it
+
+SELECT s.user_id, 
+    CASE WHEN c.time_stamp IS NULL THEN 0.00 
+    ELSE ROUND(SUM(c.action='confirmed')/COUNT(*), 2) 
+    END AS confirmation_rate
+FROM Signups AS s
+LEFT JOIN Confirmations AS c
+ON s.user_id = c.user_id
+GROUP BY s.user_id
