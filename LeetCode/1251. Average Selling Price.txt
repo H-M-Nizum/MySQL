@@ -1,0 +1,12 @@
+# Write your MySQL query statement below
+WITH cte AS
+(
+  SELECT p.product_id, SUM(p.price*u.units) AS s, SUM(u.units) AS un
+  FROM Prices AS p
+  LEFT JOIN UnitsSold AS u
+  ON p.product_id = u.Product_id AND p.start_date <= u.purchase_date AND p.end_date >= u.purchase_date
+  GROUP BY p.product_id
+)
+
+SELECT product_id, CASE WHEN ROUND(s/un, 2) IS NULL THEN 0 ELSE ROUND(s/un, 2) END AS average_price
+FROM cte
