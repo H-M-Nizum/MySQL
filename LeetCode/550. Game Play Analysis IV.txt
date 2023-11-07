@@ -1,0 +1,13 @@
+# Write your MySQL query statement below
+# DATE_ADD funcion add a day with previous day.
+WITH cte AS
+(
+  SELECT player_id, MIN(event_date) AS m
+  FROM Activity
+  GROUP BY player_id
+)
+
+SELECT ROUND(COUNT(*)/(SELECT COUNT(*) FROM cte), 2) AS fraction
+FROM cte AS c
+JOIN Activity AS a
+ON c.player_id = a.player_id AND DATE_ADD(c.m, INTERVAL 1 DAY) = a.event_date
