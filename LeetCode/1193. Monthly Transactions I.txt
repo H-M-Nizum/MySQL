@@ -1,0 +1,48 @@
+# Write your MySQL query statement below
+# cte calculate year-month formate group by year_month and country, trans_count and trans_total_amount
+# then cte1 calculte group by year_month and country , select approved total number and total amount
+# and finally join those table and return final result
+WITH cte AS
+(
+  SELECT DATE_FORMAT(trans_date, '%Y-%m') AS month, 
+    country, 
+    COUNT(*) AS trans_count,
+    SUM(amount) AS trans_total_amount
+  FROM Transactions
+  GROUP BY DATE_FORMAT(trans_date, '%Y-%m'), country
+),
+
+cte1 AS
+(
+  SELECT DATE_FORMAT(trans_date, '%Y-%m') AS month, country,
+    COUNT(*) AS approved_count,
+    SUM(amount) AS approved_total_amount
+  FROM Transactions
+  WHERE state = 'approved'
+  GROUP BY DATE_FORMAT(trans_date, '%Y-%m'), country
+)
+
+SELECT c.month, c.country, c.trans_count, 
+  # This code for null value to replace 0
+  CASE WHEN c1.approved_count IS NULL THEN 0
+  ELSE c1.approved_count END AS approved_count,
+  c.trans_total_amount, 
+  CASE WHEN c1.approved_total_amount IS NULL THEN 0
+  ELSE c1.approved_total_amount END AS approved_total_amount
+FROM cte AS c
+LEFT JOIN cte1 AS c1
+ON c.month=c1.month AND c.country = c1.country;
+
+
+
+
+
+###############################################
+# Previous code combine a single query .. This is another way solve this problem.
+  SELECT DATE_FORMAT(trans_date, '%Y-%m') AS month, 
+    country, COUNT(*) AS trans_count, 
+    SUM(CASE WHEN state='approved' THEN 1 ELSE 0 END) AS approved_count,
+    SUM(amount) AS trans_total_amount,
+    SUM(CASE WHEN state='approved' THEN amount ELSE 0 END) AS approved_total_amount
+  FROM Transactions
+  GROUP BY DATE_FORMAT(trans_date, '%Y-%m'), country
