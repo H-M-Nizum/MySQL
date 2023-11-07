@@ -1,0 +1,22 @@
+# Write your MySQL query statement below
+# Find first order date in every single customer
+WITH cte AS
+(
+  SELECT customer_id, MIN(order_date) AS min_order
+  FROM Delivery
+  GROUP BY customer_id
+),
+# JOIN main table and cte table and if order_date = customer_pref_delivery_date set 1
+# Else set 0.
+cte2 AS
+(  
+  SELECT CASE WHEN d.order_date = d.customer_pref_delivery_date THEN 1
+  ELSE 0 END AS count_imm
+  FROM cte AS c
+  INNER JOIN Delivery AS d
+  ON c.customer_id = d.customer_id AND c.min_order = d.order_date
+)
+
+# Finaly calculate immediate_percentage
+SELECT ROUND(SUM(count_imm)/COUNT(count_imm) * 100, 2) AS immediate_percentage 
+FROM cte2
