@@ -1,0 +1,7 @@
+# Write your MySQL query statement below
+# concat function connect two substring
+# UPPER fucntion return upper case, LOWER function return lower case
+# SUBSTRING return a part of string kind of slice.
+SELECT user_id, CONCAT(UPPER(SUBSTRING(name, 1, 1)), LOWER(SUBSTRING(name, 2))) AS name
+FROM Users
+ORDER BY user_id
