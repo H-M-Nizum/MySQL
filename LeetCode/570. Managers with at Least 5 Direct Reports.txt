@@ -1,0 +1,13 @@
+# Write your MySQL query statement below
+WITH cte AS
+(
+  SELECT managerID
+  FROM Employee
+  WHERE managerID IS NOT NULL
+  GROUP BY managerID
+  HAVING COUNT(id) > 4
+)
+SELECT e.name
+FROM cte AS c
+INNER JOIN Employee AS e
+ON c.managerID = e.id;
