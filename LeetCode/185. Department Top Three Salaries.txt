@@ -1,0 +1,21 @@
+# Write your MySQL query statement below
+# JOIN Employee and Department table
+WITH cte AS
+(
+  SELECT e.id, e.name, e.salary, d.name AS Department 
+  FROM Department AS d
+  INNER JOIN Employee AS e
+  ON d.id = e.departmentID
+),
+
+# numbering base on salary for every department group
+cte2 AS
+(
+  SELECT *, DENSE_RANK() OVER(PARTITION BY Department  ORDER BY salary DESC) AS r
+  FROM cte
+)
+
+# Finally show 3 employee there salary is height
+SELECT Department, name AS Employee, salary
+FROM cte2
+WHERE r = 1 OR r = 2 OR r = 3 
