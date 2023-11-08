@@ -1,0 +1,16 @@
+# Write your MySQL query statement below
+SELECT DISTINCT l.num AS ConsecutiveNums 
+FROM Logs AS l
+WHERE l.id+1  IN (SELECT l1.id FROM Logs AS l1) 
+  AND l.num = (SELECT l2.num FROM Logs AS l2 WHERE l.id+1 = l2.id) 
+  AND l.id+2  IN (SELECT l3.id FROM Logs AS l3) 
+  AND l.num = (SELECT l4.num FROM Logs AS l4 WHERE l.id+2 = l4.id)
+
+
+
+#################################
+# ANother way
+SELECT DISTINCT l.num AS ConsecutiveNums 
+FROM Logs AS l
+WHERE l.num = (SELECT l2.num FROM Logs AS l2 WHERE l.id+1 = l2.id)
+  AND l.num = (SELECT l4.num FROM Logs AS l4 WHERE l.id+2 = l4.id)
