@@ -1,10 +1,15 @@
-# Write your MySQL query statement below
+
 # This problem use regular expression
 # ^[A-Za-z] Means The prefix name must start with a letter.
 # [A-Za-z0-9_.-]* Means The prefix name is a string that may contain letters (upper or lower case), digits, underscore '_', period '.', and/or dash '-'. 
 # * use for that this critiriya use 0 to n time
 # @leetcode[.]com Means The domain is '@leetcode.com'.
 # A regular expression (.) means any kind of symble so [.] means fix . symble
+
+# Write your MySQL query statement below
 SELECT *
 FROM users
 WHERE mail REGEXP '^[A-Za-z][A-Za-z0-9_.-]*@leetcode[.]com';
+
+
+
