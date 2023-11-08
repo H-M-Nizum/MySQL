@@ -3,8 +3,8 @@
 # @Total_Weight := @Total_Weight + weight WORK like sum += value
 WITH cte AS
 (
-  SELECT turn, person_id, person_name, weight, @Total_Weight := @Total_Weight + weight AS Total_Weight
-  FROM Queue, (SELECT @Total_Weight := 0) AS TW
+  SELECT turn, person_id, person_name, weight, @Total_Weight := @Total_Weight + weight AS Total_Weight      # sum = sum + value
+  FROM Queue, (SELECT @Total_Weight := 0) AS TW             # sum = 0
   ORDER BY turn
 )
 
