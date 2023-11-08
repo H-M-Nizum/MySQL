@@ -1,0 +1,11 @@
+# IF id is odd and id not equal number of row then i change it even and if even change it odd
+
+# Write your MySQL query statement below
+
+SELECT CASE WHEN id <> (SELECT COUNT(*) FROM Seat) AND id % 2 = 1 THEN id + 1
+            WHEN id % 2 = 0 THEN id - 1
+            ELSE id
+            END AS id,
+            student
+FROM Seat
+ORDER BY id
