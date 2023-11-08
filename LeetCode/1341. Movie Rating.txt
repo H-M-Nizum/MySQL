@@ -1,0 +1,52 @@
+# Write your MySQL query statement below
+
+# Find the number of greatest rating 
+WITH cte AS 
+(
+  SELECT m.user_id, COUNT(m.rating) AS max_rating
+  FROM  MovieRating AS m
+  GROUP BY m.user_id
+),
+
+# Find the name of the user who has rated the greatest number of movies
+Find_user AS
+(
+  SELECT name
+  FROM Users
+  WHERE user_id IN (SELECT user_id FROM cte 
+                    WHERE max_rating = (SELECT MAX(max_rating) FROM cte))
+),
+
+# Find the movie name that in February 2020
+calculate_average_rating AS
+(
+  SELECT movie_id, SUM(rating) / COUNT(rating) AS agerage_rating
+  FROM MovieRating
+  WHERE DATE_FORMAT(created_at, '%Y-%m') = '2020-02'
+  GROUP BY movie_id
+), 
+
+# Find the movie name with the highest average rating
+Max_avg_rating_movie AS
+(
+  SELECT title AS name
+  FROM Movies
+  WHERE movie_id IN (SELECT movie_id 
+                    FROM calculate_average_rating 
+                    WHERE agerage_rating = (SELECT MAX(agerage_rating) 
+                                            FROM calculate_average_rating)
+                    )
+)
+
+
+# UNION ALL user name and movie name
+SELECT MIN(name) AS results # Find the lexicographically smaller user name.
+FROM Find_user
+
+UNION ALL
+
+SELECT MIN(name) AS results # Find the lexicographically smaller movie name.
+FROM Max_avg_rating_movie
+
+
+
