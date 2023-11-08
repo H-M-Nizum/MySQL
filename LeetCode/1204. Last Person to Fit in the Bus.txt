@@ -1,0 +1,15 @@
+# Write your MySQL query statement below
+
+# @Total_Weight := @Total_Weight + weight WORK like sum += value
+WITH cte AS
+(
+  SELECT turn, person_id, person_name, weight, @Total_Weight := @Total_Weight + weight AS Total_Weight
+  FROM Queue, (SELECT @Total_Weight := 0) AS TW
+  ORDER BY turn
+)
+
+SELECT person_name
+FROM cte
+WHERE Total_Weight <= 1000
+ORDER BY Total_Weight DESC
+LIMIT 1
