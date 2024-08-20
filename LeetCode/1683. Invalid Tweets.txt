@@ -2,3 +2,18 @@
 SELECT tweet_id
 FROM Tweets
 WHERE LENGTH(content) > 15;
+
+
+# ------------------------------------------------------ pandas -----------------------------------------------------
+import pandas as pd
+
+def invalid_tweets(tweets: pd.DataFrame) -> pd.DataFrame:
+    # data = []
+    # for _, row in tweets.iterrows():
+    #     if len(row['content']) > 15:
+    #         data.append(row['tweet_id'])
+    # return pd.DataFrame({'tweet_id': data})
+    return tweets[tweets['content'].apply(lambda x:len(x)>15)][['tweet_id']]
+
+
+    
