@@ -5,3 +5,16 @@
 SELECT user_id, CONCAT(UPPER(SUBSTRING(name, 1, 1)), LOWER(SUBSTRING(name, 2))) AS name
 FROM Users
 ORDER BY user_id
+
+
+#----------------------------------------------------------------------------- Pandas --------------------------------------------------------------------------
+import pandas as pd
+
+def fix_names(users: pd.DataFrame) -> pd.DataFrame:
+    # f = []
+    # for i in users['name']:
+    #     f.append(i.capitalize())
+    # users['name'] = f
+    # return users.sort_values(by=['user_id'])
+    users['name'] = users['name'].apply(lambda x:x.capitalize())
+    return users.sort_values(by=['user_id'])
