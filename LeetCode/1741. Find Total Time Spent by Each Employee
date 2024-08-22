@@ -1,0 +1,29 @@
+# ------------------------------------------------------------- Pandas Soluation -----------------------------------------------
+import pandas as pd
+def total_time(employees: pd.DataFrame) -> pd.DataFrame:
+    employees['total_time'] = employees['out_time']  - employees['in_time']
+    employees = employees.sort_values(by=['event_day', 'emp_id'])
+
+    # remove duplicat values
+    df = employees.drop_duplicates(subset=['event_day', 'emp_id'], keep='first')
+    
+    # Calculate total time
+    df1 = employees.groupby(['event_day', 'emp_id'])[['total_time']].sum()
+
+    # add total time
+    df['total_time'] = list(df1['total_time'])
+
+    # rename column name
+    df.rename(columns={'event_day' : 'day'}, inplace=True)
+    return df[['day', 'emp_id', 'total_time']]
+
+--------------------------------------------------------------------------------------
+import pandas as pd
+def total_time(employees: pd.DataFrame) -> pd.DataFrame:
+     return (
+        employees
+        .rename(columns={'event_day':'day'}) # rename column name
+        .assign(total_time=employees['out_time'] - employees['in_time'])  # Calculate total time
+        .groupby(['day', 'emp_id'])['total_time'].sum()     # Calculate total time
+        .reset_index()  # Reset index for translation back in DataFrame instead of object of type GroupBy
+        )
