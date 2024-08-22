@@ -1,0 +1,21 @@
+# -------------------------------------------------------------- Pandas Soluation ------------------------------------------------------------------------
+import pandas as pd
+
+def find_patients(patients: pd.DataFrame) -> pd.DataFrame:
+    l = []
+    for i in patients['conditions']:
+        x = i.split(' ')
+        for j in x:
+            if j.startswith('DIAB1'):
+                l.append(1)
+                break
+        else:
+            l.append(0)
+    patients['tem'] = l
+    return patients[patients['tem'] == 1][['patient_id', 'patient_name', 'conditions']]
+
+-------------------------------------------------------- using lambda
+import pandas as pd
+
+def find_patients(patients: pd.DataFrame) -> pd.DataFrame:
+    return patients[patients['conditions'].apply(lambda x: any(y.startswith('DIAB1') for y in x.split(' ')))]
