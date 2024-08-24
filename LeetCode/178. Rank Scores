@@ -1,0 +1,28 @@
+# ------------------------------------------------------------------------------ Pandas Soluation --------------------------------------------------
+import pandas as pd
+def order_scores(scores: pd.DataFrame) -> pd.DataFrame:
+    scores.sort_values(by=['score'], ascending=False, inplace=True)
+    score_l = []
+    rank_l = []
+    s = -1
+    r = 0
+    for index, row in scores.iterrows():
+        value = row['score']
+        score_l.append(value)
+        if value == s:
+            rank_l.append(r)
+        else:
+            s = value
+            r += 1
+            rank_l.append(r)
+    df = pd.DataFrame({'score' : score_l, 'rank' : rank_l})          
+    
+    return df
+
+---------------------------------------------------------------------------------------------
+import pandas as pd
+
+def order_scores(scores: pd.DataFrame) -> pd.DataFrame:
+    scores.sort_values(by=['score'], ascending=False, inplace=True)
+    scores['rank'] = scores['score'].rank(method='dense', ascending=False)
+    return scores[['score', 'rank']]
