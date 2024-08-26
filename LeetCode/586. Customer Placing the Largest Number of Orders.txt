@@ -41,3 +41,12 @@ SELECT customer_number
 FROM cte
 WHERE c = (SELECT m FROM cte2);
 
+
+#---------------------------------------------------------------------------------------------------- Pandas Soluation ----------------------------------------------------------------------------
+import pandas as pd
+def largest_orders(orders: pd.DataFrame) -> pd.DataFrame:
+    return orders['customer_number'].mode().to_frame()
+
+# .mode(): This method is applied to the Series. The mode() function returns the most frequently occurring value(s) in the Series. If there are multiple values with the highest frequency, it will return all of them.
+# .to_frame(): This method converts the Series (or the result of mode(), which is also a Series) into a DataFrame. The resulting DataFrame will have a single column with the most frequent value(s) from the original Series.
+

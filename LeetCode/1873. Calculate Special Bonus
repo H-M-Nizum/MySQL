@@ -1,0 +1,28 @@
+#---------------------------------------------------------------------------------- Pandas soluation
+import pandas as pd
+def calculate_special_bonus(employees: pd.DataFrame) -> pd.DataFrame:
+    l = []
+    for _, row in employees.iterrows():
+        if row['employee_id'] % 2 == 1 and not row['name'].startswith('M'):
+            l.append(row['salary'])
+        else:
+            l.append(0)
+    employees['bonus'] = l
+    return employees[['employee_id', 'bonus']].sort_values(by='employee_id')
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------
+import pandas as pd
+def calculate_special_bonus(employees: pd.DataFrame) -> pd.DataFrame:
+    # Create a new column 'bonus' with default value 0
+    employees['bonus'] = 0
+    
+    # Calculate bonus based on the conditions
+    employees.loc[(employees['employee_id'] % 2 != 0) & (~employees['name'].str.startswith('M')), 'bonus'] = employees  ['salary']
+    
+    # Select only the required columns and sort the result table by employee_id in ascending order
+    return employees[['employee_id', 'bonus']].sort_values(by='employee_id', ascending=True)

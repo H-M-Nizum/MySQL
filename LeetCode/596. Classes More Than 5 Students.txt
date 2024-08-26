@@ -18,3 +18,19 @@ WITH cte AS
 SELECT class
 FROM cte
 WHERE c >= 5;
+
+
+# -------------------------------------------------------------------------------------- Pandas Soluation --------------------------------------------------
+import pandas as pd
+def find_classes(courses: pd.DataFrame) -> pd.DataFrame:
+    df = courses.groupby(by=['class'])
+    l = []
+    for i in df:
+        if len(i[1]['student']) >= 5:
+            l.append(i[0][0])
+    return pd.DataFrame({'class' : l})
+  -----------------------------------------------------------------------
+import pandas as pd
+def find_classes(courses: pd.DataFrame) -> pd.DataFrame:
+    class_counts = courses.groupby('class')['student'].count().reset_index()
+    return class_counts[class_counts['student'] >= 5][['class']]

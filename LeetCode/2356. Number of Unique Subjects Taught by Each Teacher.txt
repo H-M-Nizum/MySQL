@@ -5,3 +5,28 @@ FROM Teacher
 # calculate the number of unique subjects each teacher teaches in the university.
 
 GROUP BY teacher_id;
+
+
+
+
+
+# ------------------------------------------------------------------------ pandas Soluation ------------------------------------------------------------------------
+import pandas as pd
+def count_unique_subjects(teacher: pd.DataFrame) -> pd.DataFrame:
+    d = teacher.groupby(by=['teacher_id'])
+    t_id = []
+    cnt = []
+    for i in d:
+        t_id.append(i[0][0])
+        cnt.append(len(i[1]['subject_id'].unique()))
+    df = pd.DataFrame({'teacher_id' : t_id, 'cnt' : cnt})
+    return df
+
+
+--------------------------------------------------
+import pandas as pd
+def count_unique_subjects(teacher: pd.DataFrame) -> pd.DataFrame:
+    return (
+        teacher.groupby('teacher_id', as_index=False)
+        .agg(cnt = ('subject_id', 'nunique'))
+    )

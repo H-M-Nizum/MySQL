@@ -7,10 +7,32 @@ ORDER BY author_id;
 
 
 
-
-
 # Write your MySQL query statement below
 SELECT DISTINCT author_id AS id
 FROM Views
 WHERE author_id = viewer_id
 ORDER BY author_id;
+
+
+
+#---------------------------------------------------------- pandas ----------------------------------------------------------
+import pandas as pd
+
+def article_views(views: pd.DataFrame) -> pd.DataFrame:
+    data = views[views['author_id'] == views['viewer_id']][['author_id']].sort_values(by='author_id')
+    data = data['author_id'].unique()
+    df = pd.DataFrame(data)
+    df.rename(columns={0: 'id'}, inplace=True)
+    return df
+
+
+---------------------------
+import pandas as pd
+
+def article_views(views: pd.DataFrame) -> pd.DataFrame:
+    data = views[views['author_id'] == views['viewer_id']][['author_id']].sort_values(by='author_id')
+    data = data['author_id'].unique()
+    df = pd.DataFrame({'id' : data})
+    # df.rename(columns={0: 'id'}, inplace=True)
+    return df
+    

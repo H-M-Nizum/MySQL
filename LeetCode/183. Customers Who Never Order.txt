@@ -23,3 +23,14 @@ FROM Customers
 LEFT JOIN Orders
 ON Orders.customerId = Customers.id
 WHERE Orders.customerid IS NULL;
+
+
+------------------------------------------------------------------------- Pandas ----------------------------------------------------
+import pandas as pd
+
+def find_customers(customers: pd.DataFrame, orders: pd.DataFrame) -> pd.DataFrame:
+    data = customers[~customers['id'].isin(orders['customerId'])]
+    df = pd.DataFrame(data['name'])
+    df.rename(columns={'name': 'Customers'}, inplace=True)
+    return df
+    
